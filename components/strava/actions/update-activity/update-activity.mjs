@@ -1,8 +1,8 @@
-import strava from "../../strava.app.js";
+import strava from "../../strava.app.mjs";
 
 export default {
   name: "Update Activity",
-  description: "Updates the given activity that is owned by the authenticated athlete. See `https://developers.strava.com/docs/reference/`",
+  description: "Updates the given activity that is owned by the authenticated athlete. [See the docs](https://developers.strava.com/docs/reference/)",
   key: "strava-update-activity",
   version: "0.0.1",
   type: "action",
@@ -21,11 +21,11 @@ export default {
     },
   },
   async run({ $ }) {
-    const data = {
+    const resp = await this.strava.updateActivity({
+      $,
       activityId: this.activityId,
       ...this.body,
-    };
-    const resp = await this.strava.updateActivity($, data);
+    });
     $.export("$summary", "The activity has been updated");
     return resp;
   },

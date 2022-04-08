@@ -1,6 +1,6 @@
-const strava = require("../../strava.app.js");
+import strava from "../../strava.app.mjs";
 
-module.exports = {
+export default {
   key: "strava-custom-events",
   name: "New Custom Event",
   description: "Emit new event when an activity is created, updated, or deleted",
@@ -9,8 +9,8 @@ module.exports = {
   props: {
     strava,
     eventNameOptions: {
-      label: "Strava Events",
-      description: "Custom Strava Event Names",
+      //label not supported for prop stravaApphook
+      //description not supported for prop stravaApphook
       type: "string[]",
       async options() {
         return [
@@ -37,7 +37,9 @@ module.exports = {
       let details;
       // Optimistically fetch activity details. When an event is deleted, this will fail
       try {
-        details = await this.strava.getActivity(event.object_id);
+        details = await this.strava.getActivity({
+          activityId: event.object_id,
+        });
       } catch (err) {
         console.log(`Error fetching activity details: ${err}`);
       }

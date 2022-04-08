@@ -1,6 +1,6 @@
-const strava = require("../../strava.app.js");
+import strava from "../../strava.app.mjs";
 
-module.exports = {
+export default {
   key: "strava-activity-deleted",
   name: "New Activity Deleted Event",
   description: "Emit new event when an activity is deleted",
@@ -9,8 +9,8 @@ module.exports = {
   props: {
     strava,
     stravaApphook: {
-      label: "App hook",
-      description: "Strava App webhook",
+      //label not supported for prop stravaApphook
+      //description not supported for prop stravaApphook
       type: "$.interface.apphook",
       appProp: "strava",
       eventNames: [

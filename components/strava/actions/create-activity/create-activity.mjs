@@ -1,10 +1,10 @@
-import strava from "../../strava.app.js";
+import strava from "../../strava.app.mjs";
 
 export default {
   name: "Create Activity",
-  description: "Creates a manual activity for an athlete. See `https://developers.strava.com/docs/reference/`",
+  description: "Creates a manual activity for an athlete. [See the docs](https://developers.strava.com/docs/reference/)",
   key: "strava-create-activity",
-  version: "0.0.1",
+  version: "0.1.5",
   type: "action",
   props: {
     strava,
@@ -60,8 +60,16 @@ export default {
     },
   },
   async run({ $ }) {
+    //RegExp to check if ISO date string without milliseconds.
     const isoDateRegexp = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(([+-](\d{2}):(\d{2})|Z))$/;
-    const data = {
+    if (this.distance && isNaN(parseFloat(this.distance))) {
+      throw new Error("Please provide a float for `Distance`");
+    }
+    if (!isoDateRegexp.test(this.start_date_local)) {
+      throw new Error("Please provide `Start date of activity` in required format");
+    }
+    const resp = await this.strava.createNewActivity({
+      $,
       name: this.name,
       type: this.type,
       start_date_local: this.start_date_local,
@@ -71,12 +79,7 @@ export default {
       trainer: this.trainer,
       commute: this.commute,
       hide_from_home: this.hide_from_home,
-    };
-    if (this.distance && isNaN(parseFloat(this.distance)))
-      throw new Error("Please provide a float for `Distance`");
-    if (!isoDateRegexp.test(this.start_date_local))
-      throw new Error("Please provide `Start date of activity` in required format");
-    const resp = await this.strava.createNewActivity($, data);
+    });
     $.export("$summary", "Successfully added activity");
     return resp;
   },

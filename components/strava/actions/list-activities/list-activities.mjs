@@ -1,8 +1,8 @@
-import strava from "../../strava.app.js";
+import strava from "../../strava.app.mjs";
 
 export default {
   name: "Get Activity List",
-  description: "Returns the activities of an athlete for a specific identifier. See `https://developers.strava.com/docs/reference/`",
+  description: "Returns the activities of an athlete for a specific identifier. [See the docs](https://developers.strava.com/docs/reference/)",
   key: "strava-get-activity-list",
   version: "0.0.1",
   type: "action",
@@ -28,13 +28,24 @@ export default {
     },
   },
   async run({ $ }) {
-    const data = {
-      before: this.before,
-      after: this.after,
+    const activities = [];
+    const resourcesStream = await this.strava.getResourcesStream({
+      resourceFn: this.strava.listActivities,
+      resourceFnArgs: {
+        $,
+        params: {
+          before: this.before,
+          after: this.after,
+          per_page: 100,
+        },
+      },
       maxItems: this.maxItems,
-    };
-    const resp = await this.strava.listActivities($, data);
-    $.export("$summary", "The activity list has been retrieved");
-    return resp;
+    });
+    for await (const activity of resourcesStream) {
+      activities.push(activity);
+    }
+    // eslint-disable-next-line multiline-ternary
+    $.export("$summary", `Successfully fetched ${activities.length} ${activities.length === 1 ? "activity" : "activities"}`);
+    return activities;
   },
 };

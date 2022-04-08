@@ -1,8 +1,8 @@
-import strava from "../../strava.app.js";
+import strava from "../../strava.app.mjs";
 
 export default {
   name: "Get Activity By ID",
-  description: "Returns the given activity that is owned by the authenticated athlete. See `https://developers.strava.com/docs/reference/`",
+  description: "Returns the given activity that is owned by the authenticated athlete. [See the docs](https://developers.strava.com/docs/reference/)",
   key: "strava-get-activity-by-id",
   version: "0.0.1",
   type: "action",
@@ -21,11 +21,11 @@ export default {
     },
   },
   async run({ $ }) {
-    const data = {
+    const resp = await this.strava.getActivity({
+      $,
       activityId: this.activityId,
       include_all_efforts: this.include_all_efforts,
-    };
-    const resp = await this.strava.getActivityById($, data);
+    });
     $.export("$summary", "The activity has been retrieved");
     return resp;
   },
