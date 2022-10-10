@@ -122,7 +122,7 @@ jobs:
         with:
           format: 'json'
       - name: Check component keys
-        run: node scripts/findBadKeys.js ${{ steps.changed_files }}
+        run: node scripts/findBadKeys.js ${{ steps.changed_files.outputs.added_modified }}
       - name: Check for duplicate component keys
         run: node scripts/findDuplicateKeys.js
 
