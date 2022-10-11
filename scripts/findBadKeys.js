@@ -73,16 +73,17 @@ const checkPathVsKey = () => {
       console.error(`[!] ${file} has no component key! Either its file name should start with 'common' or it should be in a folder named 'common'`);
     } else {
       const uriParts = file.split("/");
-      const keyParts = componentKey.split("_");
+      
       console.log("uriParts", uriParts);
-      console.log("keyParts", keyParts);
-      if (uriParts.length < 2 || keyParts.length < 2) {
+      console.log("keyName", keyName);
+      if (uriParts.length < 2) {
         err = true;
         console.error(`[!] ${file} components should be in folders named as the same with their file names!`);
       } else {
-        const folderName = uriParts[uriParts.lenth - 2];
-        const fileName = uriParts[uriParts.lenth - 1].split(".")[0];
-        const keyName = keyParts[1];
+        const folderName = uriParts[uriParts.length - 2];
+        const fileName = uriParts[uriParts.length - 1].split(".")[0];
+        const keyName = componentKey.split("-").slice(1).join("-");
+        console.log("folderName, fileName, keyName", folderName, fileName, keyName);
         if (folderName != fileName || fileName != keyName) {
           err = true;
           console.error(`[!] ${file} component folder name, component file name and component key without slug should be the same!`);
