@@ -56,11 +56,10 @@ const getComponentKey = ( p )  => {
 };
 
 const checkPathVsKey = () => {
-  const changedFiles = JSON.parse(args[2]);
+  const changedFiles = args[2].replaceAll(/[\[\]]*/g,"").split(",");
   console.log("changedFiles", changedFiles);
   for (const file of changedFiles) {
     console.log("file", file);
-    
     const p = path.join(rootDir, file);
     console.log("p", p);
     console.log(isAppFile(p), isCommonFile(p), isSourceFile(p));
