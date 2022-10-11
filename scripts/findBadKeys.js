@@ -59,7 +59,11 @@ const checkPathVsKey = () => {
   const changedFiles = args[2];
   console.log("changedFiles", changedFiles);
   for (const file of changedFiles) {
+    console.log("file", file);
+    
     const p = path.join(rootDir, file);
+    console.log("p", p);
+    console.log((isAppFile(p), isCommonFile(p), isSourceFile(p));
     if (isAppFile(p) || isCommonFile(p) || !isSourceFile(p))
       continue;
     const componentKey = getComponentKey(p);
@@ -123,7 +127,6 @@ for (const name of dirs) {
     console.error(`[!] directory '${name}' does not match name slug '${nameSlug}'`);
     err = true;
   }
-  console.log("checking...", p, "-----", nameSlug);
   checkKeys(p, nameSlug);
 }
 
