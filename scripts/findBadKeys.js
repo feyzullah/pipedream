@@ -58,7 +58,7 @@ const getComponentKey = ( p )  => {
 const checkPathVsKey = () => {
   console.log("args[2]", args[2]);
   console.log("type", typeof args[2]);
-  const changedFiles = args[2].replaceAll(/[\[\]]*/g,"").split(",");
+  const changedFiles = args[2].replace(/[\[\]]*/g,"").split(",");
   
   console.log("changedFiles", changedFiles);
   for (const file of changedFiles) {
