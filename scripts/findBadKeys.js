@@ -47,8 +47,7 @@ const isCommonFile = ( subname ) => {
 }
 
 const getComponentKey = ( p )  => {
-  const pp = path.join(p, subname);
-  const data = fs.readFileSync(pp, "utf8");
+  const data = fs.readFileSync(p, "utf8");
   const md = data.match(/['"]?key['"]?: ['"]([^'"]+)/);
   if (md && md.length > 1)
     return md[1];
