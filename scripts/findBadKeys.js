@@ -35,13 +35,55 @@ function checkKeys(p, nameSlug) {
   }
 }
 
+const isAppFile = ( subname ) =>
+  subname.endsWith(".app.mjs") || subname.endsWith(".app.js") || subname.endsWith(".app.mts") || subname.endsWith(".app.ts");
 
+const isSourceFile = ( subname ) =>
+  subname.endsWith(".mjs") || subname.endsWith(".js") || subname.endsWith(".mts") || subname.endsWith(".ts");
 
-console.log("the args are here", JSON.stringify(args[2]));
-function checkPathVsKey(p, nameSlug) {
-  console.log("p is", p);
-  console.log("nameSlug is", nameSlug);
+const isCommonFile = ( subname ) => {
+  const regex = /\/common.*(\/|\.js|\.mjs|\.ts|\.mts|)/g;
+  return regex.test(subname);
 }
+
+const getComponentKey = ( p )  => {
+  const pp = path.join(p, subname);
+  const data = fs.readFileSync(pp, "utf8");
+  const md = data.match(/['"]?key['"]?: ['"]([^'"]+)/);
+  if (md && md.length > 1)
+    return md[1];
+  return false;
+};
+
+const checkPathVsKey = () => {
+  const changedFiles = args[2];
+  console.log("changedFiles", changedFiles);
+  for (const file of changedFiles) {
+    const p = path.join(rootDir, file);
+    if (isAppFile(p) || isCommonFile(p) || !isSourceFile(p))
+      continue;
+    const componentKey = getComponentKey(p);
+    if (!componentKey) {
+      err = true;
+      console.error(`[!] ${file} has no component key! Either its file name should start with 'common' or it should be in a folder named 'common'`);
+    } else {
+      const uriParts = file.split["/"];
+      const keyParts = componentKey.split("_");
+      if (uriParts.length < 2 || keyParts.length < 2) {
+        err = true;
+        console.error(`[!] ${file} components should be in folders named as the same with their files!`);
+      } else {
+        const folderName = uriParts[uriParts.lenth - 2];
+        const fileName = uriParts[uriParts.lenth - 1].split(".")[0];
+        const keyName = keyParts[1];
+        if (folderName != fileName || fileName != keyName) {
+          err = true;
+          console.error(`[!] ${file} component folder name, component file name and component key withoud slug should be the same!`);
+        }
+      }
+    }
+  }
+};
 
 const dirs = fs.readdirSync(componentsDir);
 for (const name of dirs) {
@@ -83,8 +125,9 @@ for (const name of dirs) {
   }
   console.log("checking...", p, "-----", nameSlug);
   checkKeys(p, nameSlug);
-  checkPathVsKey(p, nameSlug);
 }
+
+checkPathVsKey();
 
 if (err) {
   process.exit(1);
