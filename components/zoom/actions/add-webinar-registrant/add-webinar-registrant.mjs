@@ -2,7 +2,7 @@
 import { axios } from "@pipedream/platform";
 
 export default {
-  key: "zoom-add-webinar-registrant-v2",
+  key: "zoom-add-webinar-registrant-v3",
   name: "Add Webinar Registrant",
   description: "Registers a participant for a webinar.",
   version: "0.2.1",
