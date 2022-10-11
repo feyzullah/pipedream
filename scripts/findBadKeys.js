@@ -63,7 +63,7 @@ const checkPathVsKey = () => {
     
     const p = path.join(rootDir, file);
     console.log("p", p);
-    console.log((isAppFile(p), isCommonFile(p), isSourceFile(p));
+    console.log(isAppFile(p), isCommonFile(p), isSourceFile(p));
     if (isAppFile(p) || isCommonFile(p) || !isSourceFile(p))
       continue;
     const componentKey = getComponentKey(p);
