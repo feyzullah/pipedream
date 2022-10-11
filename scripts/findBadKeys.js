@@ -72,7 +72,7 @@ const checkPathVsKey = () => {
       err = true;
       console.error(`[!] ${file} has no component key! Either its file name should start with 'common' or it should be in a folder named 'common'`);
     } else {
-      const uriParts = file.split["/"];
+      const uriParts = file.split("/");
       const keyParts = componentKey.split("_");
       if (uriParts.length < 2 || keyParts.length < 2) {
         err = true;
