@@ -74,16 +74,18 @@ const checkPathVsKey = () => {
     } else {
       const uriParts = file.split("/");
       const keyParts = componentKey.split("_");
+      console.log("uriParts", uriParts);
+      console.log("keyParts", keyParts);
       if (uriParts.length < 2 || keyParts.length < 2) {
         err = true;
-        console.error(`[!] ${file} components should be in folders named as the same with their files!`);
+        console.error(`[!] ${file} components should be in folders named as the same with their file names!`);
       } else {
         const folderName = uriParts[uriParts.lenth - 2];
         const fileName = uriParts[uriParts.lenth - 1].split(".")[0];
         const keyName = keyParts[1];
         if (folderName != fileName || fileName != keyName) {
           err = true;
-          console.error(`[!] ${file} component folder name, component file name and component key withoud slug should be the same!`);
+          console.error(`[!] ${file} component folder name, component file name and component key without slug should be the same!`);
         }
       }
     }
