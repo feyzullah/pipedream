@@ -56,7 +56,7 @@ const getComponentKey = ( p )  => {
 };
 
 const checkPathVsKey = () => {
-  const changedFiles = args[2];
+  const changedFiles = JSON.parse(args[2]);
   console.log("changedFiles", changedFiles);
   for (const file of changedFiles) {
     console.log("file", file);
