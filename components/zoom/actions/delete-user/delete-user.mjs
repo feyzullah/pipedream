@@ -2,10 +2,10 @@
 import { axios } from "@pipedream/platform";
 
 export default {
-  key: "zoom-delete-user",
+  key: "zoom-delete-user-v2",
   name: "Delete User",
   description: "Disassociates (unlinks) a user from the associated account or permanently deletes a user.",
-  version: "0.2.1",
+  version: "0.2.2",
   type: "action",
   props: {
     zoom: {
