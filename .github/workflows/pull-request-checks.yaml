@@ -120,9 +120,9 @@ jobs:
         id: changed_files
         uses: jitterbit/get-changed-files@v1
         with:
-          format: 'json'
+          format: 'csv'
       - name: Check component keys
-        run: node scripts/findBadKeys.js ${{ steps.changed_files.outputs.added_modified }}
+        run: node scripts/findBadKeys.js ${{ steps.changed_files.outputs.added_modified }} ${{ steps.changed_files.outputs.renamed }}
       - name: Check for duplicate component keys
         run: node scripts/findDuplicateKeys.js
 

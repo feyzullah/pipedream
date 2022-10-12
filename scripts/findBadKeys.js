@@ -4,7 +4,6 @@ const path = require("path");
 
 const rootDir = path.resolve(__dirname, "..");
 const componentsDir = path.join(rootDir, "components");
-const args = process.argv;
 
 let err = false;
 
@@ -55,9 +54,9 @@ const getComponentKey = ( p )  => {
 };
 
 const checkPathVsKey = () => {
-  console.log("args[2]", args[2]);
-  console.log("type", typeof args[2]);
-  const changedFiles = args[2].replace(/[\[\]]*/g,"").split(",");
+  console.log("args[2]", process.argv[2], process.argv[3]);
+  console.log("type", typeof process.argv[2]);
+  const changedFiles = [...process.argv[2].split(","), ...process.argv[3].split(",")];
   
   console.log("changedFiles", changedFiles);
   for (const file of changedFiles) {
